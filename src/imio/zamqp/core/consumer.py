@@ -8,28 +8,22 @@ import time
 import transaction
 
 from ZODB.POSException import ConflictError
-from five import grok
 from zope.component.hooks import getSite
 from zope.globalrequest import getRequest
 
 from Products.CMFPlone.utils import base_hasattr
+from plone import api
 from plone.dexterity.utils import createContentInContainer
 from plone.namedfile.file import NamedBlobFile
-from collective.dms.batchimport.utils import createDocument
-from collective.dms.batchimport.utils import log
-import plone.api
-
-from collective.zamqp.consumer import Consumer
-from collective.zamqp.interfaces import IMessageArrivedEvent
-# from collective.zamqp.interfaces import IProducer
-
 from imio.zamqp.core import base
-from imio.zamqp.core import interfaces
+
+import logging
+log = logging.getLogger('imio.zamqp.core')
 
 
 def commit(retry_count=10):
     commited = False
-    while commited == False:
+    while commited is False:
         try:
             transaction.commit()
             commited = True
@@ -40,41 +34,6 @@ def commit(retry_count=10):
                 raise e
 
 
-class InvoiceConsumer(base.DMSConsumer, Consumer):
-    grok.name('dms.invoice')
-    connection_id = 'dms.connection'
-    exchange = 'dms.invoice'
-    marker = interfaces.IInvoice
-    queuename = 'dms.invoice.{0}'
-
-
-@grok.subscribe(interfaces.IInvoice, IMessageArrivedEvent)
-def consume_invoices(message, event):
-    doc = Document('incoming-mail', 'dmsincomingmail', message)
-    doc.create_or_update()
-    # producer = getUtility(IProducer, 'dms.invoice.videocoding')
-    # producer._register()
-    # producer.publish(message.body)
-    commit()
-    message.ack()
-
-
-class IncomingMailConsumer(base.DMSConsumer, Consumer):
-    grok.name('dms.incomingmail')
-    connection_id = 'dms.connection'
-    exchange = 'dms.incomingmail'
-    marker = interfaces.IIncomingMail
-    queuename = 'dms.incomingmail.{0}'
-
-
-@grok.subscribe(interfaces.IIncomingMail, IMessageArrivedEvent)
-def consume_incoming_mails(message, event):
-    doc = Document('incoming-mail', 'dmsincomingmail', message)
-    doc.create_or_update()
-    commit()
-    message.ack()
-
-
 class Dummy(object):
 
     def __init__(self, context, request):
@@ -82,7 +41,7 @@ class Dummy(object):
         self.request = request
 
 
-class Document(object):
+class BaseConsumer(object):
 
     def __init__(self, folder, document_type, message):
         self.folder = self.site.unrestrictedTraverse(folder)
@@ -90,7 +49,11 @@ class Document(object):
         self.obj = base.MessageAdapter(cPickle.loads(message.body))
         self.metadata = self.obj.metadata.copy()
         self.context = Dummy(self.folder, getRequest())
-        self.scan_fields = {'scan_id': '', 'pages_number': '', 'scan_date': '', 'scan_user': '', 'scanner': ''}
+        self.scan_fields = {'scan_id': '',
+                            'pages_number': '',
+                            'scan_date': '',
+                            'scan_user': '',
+                            'scanner': ''}
         self.scan_fields['version'] = self.obj.version
         keys = self.metadata.keys()
         for key in keys:
@@ -103,7 +66,7 @@ class Document(object):
 
     @property
     def existing_file(self):
-        result = self.folder.portal_catalog(
+        result = self.site.portal_catalog(
             portal_type='dmsmainfile',
             scan_id=self.scan_fields.get('scan_id'),
         )
@@ -146,7 +109,7 @@ class Document(object):
         if self.obj.version < getattr(the_file, 'version', 1):
             log.info('file not updated due to an oldest version (scan_id: {0})'.format(the_file.scan_id))
             return
-        plone.api.content.delete(obj=the_file)
+        api.content.delete(obj=the_file)
         document = the_file.aq_parent
         # dont modify id !
         del self.metadata['id']
@@ -163,16 +126,4 @@ class Document(object):
         log.info('file has been updated (scan_id: {0})'.format(new_file.scan_id))
 
     def create(self, obj_file):
-        if self.scan_fields['scan_date']:
-            self.metadata['reception_date'] = self.scan_fields['scan_date']
-        if 'recipient_groups' not in self.metadata:
-            self.metadata['recipient_groups'] = []
-        (document, main_file) = createDocument(
-            self.context,
-            self.folder,
-            self.document_type,
-            '',
-            obj_file,
-            owner=self.obj.creator,
-            metadata=self.metadata)
-        self.set_scan_attr(main_file)
+        raise NotImplementedError
