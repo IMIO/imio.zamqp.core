@@ -11,7 +11,6 @@ from ZODB.POSException import ConflictError
 from zope.component.hooks import getSite
 from zope.globalrequest import getRequest
 
-from Products.CMFPlone.utils import base_hasattr
 from plone import api
 from plone.dexterity.utils import createContentInContainer
 from plone.namedfile.file import NamedBlobFile
@@ -41,7 +40,7 @@ class Dummy(object):
         self.request = request
 
 
-class DMSMainFileConsumer(object):
+class DMSMainFile(object):
 
     def __init__(self, folder, document_type, message):
         self.folder = self.site.unrestrictedTraverse(folder)
@@ -65,9 +64,13 @@ class DMSMainFileConsumer(object):
         return getSite()
 
     @property
+    def file_portal_type(self):
+        return 'dmsmainfile'
+
+    @property
     def existing_file(self):
         result = self.site.portal_catalog(
-            portal_type='dmsmainfile',
+            portal_type=self.file_portal_type,
             scan_id=self.scan_fields.get('scan_id'),
         )
         if result:
@@ -91,8 +94,12 @@ class DMSMainFileConsumer(object):
         return HTTPBasicAuth(base.get_config('ws_login'),
                              base.get_config('ws_password'))
 
+    @property
+    def obj_file(self):
+        return NamedBlobFile(self.file_content, filename=self.obj.filename)
+
     def create_or_update(self):
-        obj_file = NamedBlobFile(self.file_content, filename=self.obj.filename)
+        obj_file = self.obj_file
         the_file = self.existing_file
         if the_file:
             self.update(the_file, obj_file)
@@ -110,20 +117,24 @@ class DMSMainFileConsumer(object):
             log.info('file not updated due to an oldest version (scan_id: {0})'.format(the_file.scan_id))
             return
         api.content.delete(obj=the_file)
-        document = the_file.aq_parent
-        # dont modify id !
-        del self.metadata['id']
-        for key, value in self.metadata.items():
-            if base_hasattr(document, key) and value:
-                setattr(document, key, value)
+        container = the_file.aq_parent
+        self._updateContainer(container)
+        new_file = self._upload_file(container, obj_file)
+        self.set_scan_attr(new_file)
+        log.info('file has been updated (scan_id: {0})'.format(new_file.scan_id))
+
+    def _updateContainer(self, container):
+        """Update container if necessary."""
+        return
+
+    def _upload_file(self, document, obj_file):
         new_file = createContentInContainer(
             document,
-            'dmsmainfile',
+            self.file_portal_type,
             title=self.metadata.get('file_title'),
             file=obj_file,
         )
-        self.set_scan_attr(new_file)
-        log.info('file has been updated (scan_id: {0})'.format(new_file.scan_id))
+        return new_file
 
     def create(self, obj_file):
         raise NotImplementedError

@@ -8,7 +8,4 @@
   <five:registerPackage package="." initialize=".initialize" />
   <include package="collective.zamqp" />
 
-  <grok:grok package=".consumer" />
-  <!--<grok:grok package=".producer" />-->
-
 </configure>
