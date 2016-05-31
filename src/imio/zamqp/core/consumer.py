@@ -41,7 +41,7 @@ class Dummy(object):
         self.request = request
 
 
-class BaseConsumer(object):
+class DMSMainFileConsumer(object):
 
     def __init__(self, folder, document_type, message):
         self.folder = self.site.unrestrictedTraverse(folder)
