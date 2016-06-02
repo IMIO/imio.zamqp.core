@@ -84,7 +84,7 @@ class DMSMainFile(object):
                                     self.obj.version)
         r = requests.get(url, auth=self.http_auth)
         if r.status_code != 200:
-            raise ValueError('HTTP error : %s' % r.status_code)
+            raise ValueError("HTTP error : %s" % r.status_code)
         if hashlib.md5(r.content).hexdigest() != self.obj.file_md5:
             raise ValueError("MD5 doesn't match")
         return r.content
@@ -114,14 +114,14 @@ class DMSMainFile(object):
 
     def update(self, the_file, obj_file):
         if self.obj.version < getattr(the_file, 'version', 1):
-            log.info('file not updated due to an oldest version (scan_id: {0})'.format(the_file.scan_id))
+            log.info("file not updated due to an oldest version (scan_id: {0})".format(the_file.scan_id))
             return
         api.content.delete(obj=the_file)
         container = the_file.aq_parent
         self._updateContainer(container)
         new_file = self._upload_file(container, obj_file)
         self.set_scan_attr(new_file)
-        log.info('file has been updated (scan_id: {0})'.format(new_file.scan_id))
+        log.info("file has been updated (scan_id: {0})".format(new_file.scan_id))
 
     def _updateContainer(self, container):
         """Update container if necessary."""
