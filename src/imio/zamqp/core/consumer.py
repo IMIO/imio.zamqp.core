@@ -121,6 +121,7 @@ class DMSMainFile(object):
         self._updateContainer(container)
         new_file = self._upload_file(container, obj_file)
         self.set_scan_attr(new_file)
+        container.reindexObject()
         log.info("file has been updated (scan_id: {0})".format(new_file.scan_id))
 
     def _updateContainer(self, container):
