@@ -116,8 +116,8 @@ class DMSMainFile(object):
         if self.obj.version < getattr(the_file, 'version', 1):
             log.info("file not updated due to an oldest version (scan_id: {0})".format(the_file.scan_id))
             return
-        api.content.delete(obj=the_file)
         container = the_file.aq_parent
+        api.content.delete(obj=the_file)
         self._updateContainer(container)
         new_file = self._upload_file(container, obj_file)
         self.set_scan_attr(new_file)
