@@ -38,23 +38,29 @@ class MessageAdapter(object):
 
 class DMSConsumer(object):
 
+    client_id_var = 'client_id'
+    routing_key_var = 'routing_key'
+
     @property
     def queue(self):
-        client_id = get_config('client_id')
+        client_id = get_config(self.client_id_var)
         return self.queuename.format(client_id)
 
     @property
     def routing_key(self):
-        return get_config('routing_key')
+        return get_config(self.routing_key_var)
 
 
 class DMSProducer(object):
 
+    client_id_var = 'client_id'
+    routing_key_var = 'routing_key'
+
     @property
     def queue(self):
-        client_id = get_config('client_id')
+        client_id = get_config(self.client_id_var)
         return self.queuename.format(client_id)
 
     @property
     def routing_key(self):
-        return get_config('routing_key')
+        return get_config(self.routing_key_var)
