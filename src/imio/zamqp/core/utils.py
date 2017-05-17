@@ -32,7 +32,8 @@ def next_scan_id(file_portal_type='dmsmainfile', cliend_id_var='client_id'):
     return client_id + unique_id
 
 
-def scan_id_barcode(obj, file_portal_type='dmsmainfile', client_id_var='client_id', barcode_options={}):
+def scan_id_barcode(obj, file_portal_type='dmsmainfile', cliend_id_var='client_id', barcode_format='IMIO{0}',
+                    barcode_options={}):
     """Generate the barcode with scan_id for given p_obj :
        - set the scan_id attribute on given p_obj if it does not exist yet;
        - return the data of the generated barcode.
@@ -43,5 +44,5 @@ def scan_id_barcode(obj, file_portal_type='dmsmainfile', client_id_var='client_i
         scan_id = next_scan_id(file_portal_type=file_portal_type, cliend_id_var=cliend_id_var)
         obj.scan_id = scan_id
         obj.reindexObject(idxs=['scan_id'])
-    barcode = generate_barcode(scan_id, **barcode_options)
+    barcode = generate_barcode(barcode_format.format(scan_id), **barcode_options)
     return barcode
