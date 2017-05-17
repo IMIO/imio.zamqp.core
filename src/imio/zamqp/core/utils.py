@@ -20,11 +20,11 @@ def highest_scan_id(file_portal_type='dmsmainfile'):
         return None
 
 
-def next_scan_id(file_portal_type='dmsmainfile'):
+def next_scan_id(file_portal_type='dmsmainfile', cliend_id_var='client_id'):
     highest_id = highest_scan_id(file_portal_type=file_portal_type)
     if not highest_id:
         # generate first scan_id, concatenate client_id and first number
-        client_id = base.get_config('client_id')
+        client_id = base.get_config(cliend_id_var)
         highest_id = client_id + '00000000'
     client_id, unique_id = highest_id[0:7], highest_id[7:15]
     # increment unique_id
@@ -32,7 +32,7 @@ def next_scan_id(file_portal_type='dmsmainfile'):
     return client_id + unique_id
 
 
-def scan_id_barcode(obj, file_portal_type='dmsmainfile', barcode_options={}):
+def scan_id_barcode(obj, file_portal_type='dmsmainfile', client_id_var='client_id', barcode_options={}):
     """Generate the barcode with scan_id for given p_obj :
        - set the scan_id attribute on given p_obj if it does not exist yet;
        - return the data of the generated barcode.
@@ -40,7 +40,7 @@ def scan_id_barcode(obj, file_portal_type='dmsmainfile', barcode_options={}):
        generate_barcode method to get available options."""
     scan_id = getattr(aq_base(obj), 'scan_id', None)
     if not scan_id:
-        scan_id = next_scan_id(file_portal_type=file_portal_type)
+        scan_id = next_scan_id(file_portal_type=file_portal_type, cliend_id_var=cliend_id_var)
         obj.scan_id = scan_id
         obj.reindexObject(idxs=['scan_id'])
     barcode = generate_barcode(scan_id, **barcode_options)
