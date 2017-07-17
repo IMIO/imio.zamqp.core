@@ -6,22 +6,24 @@ from imio.zamqp.core import base
 from plone import api
 
 
-def highest_scan_id(file_portal_type='dmsmainfile'):
-    """Returns the highest scan_id found for given p_portal_type.
+def highest_scan_id(file_portal_types=['dmsmainfile']):
+    """Returns the highest scan_id found for given p_file_portal_types.
        If no scan_id found, None is returned."""
     catalog = api.portal.get_tool('portal_catalog')
-    brains = catalog(portal_type=file_portal_type,
-                     sort_on='scan_id',
-                     sort_order='descending',
-                     sort_limit=1)
+    # do the search unrestricted so we are sure to get every elements
+    brains = catalog.unrestrictedSearchResults(
+        portal_type=file_portal_types,
+        sort_on='scan_id',
+        sort_order='descending',
+        sort_limit=1)
     if brains:
         return brains[0].scan_id
     else:
         return None
 
 
-def next_scan_id(file_portal_type='dmsmainfile', cliend_id_var='client_id', scan_type='3'):
-    highest_id = highest_scan_id(file_portal_type=file_portal_type)
+def next_scan_id(file_portal_types=['dmsmainfile'], cliend_id_var='client_id', scan_type='3'):
+    highest_id = highest_scan_id(file_portal_types=file_portal_types)
     if not highest_id:
         # generate first scan_id, concatenate client_id and first number
         client_id = base.get_config(cliend_id_var)
@@ -32,7 +34,8 @@ def next_scan_id(file_portal_type='dmsmainfile', cliend_id_var='client_id', scan
     return client_id + unique_id
 
 
-def scan_id_barcode(obj, file_portal_type='dmsmainfile', cliend_id_var='client_id', barcode_format='IMIO{0}',
+def scan_id_barcode(obj, file_portal_types=['dmsmainfile'],
+                    cliend_id_var='client_id', barcode_format='IMIO{0}',
                     scan_type='3', barcode_options={}):
     """Generate the barcode with scan_id for given p_obj :
        - set the scan_id attribute on given p_obj if it does not exist yet;
@@ -41,7 +44,9 @@ def scan_id_barcode(obj, file_portal_type='dmsmainfile', cliend_id_var='client_i
        generate_barcode method to get available options."""
     scan_id = getattr(aq_base(obj), 'scan_id', None)
     if not scan_id:
-        scan_id = next_scan_id(file_portal_type=file_portal_type, cliend_id_var=cliend_id_var, scan_type=scan_type)
+        scan_id = next_scan_id(file_portal_types=file_portal_types,
+                               cliend_id_var=cliend_id_var,
+                               scan_type=scan_type)
         obj.scan_id = scan_id
         obj.reindexObject(idxs=['scan_id'])
     barcode = generate_barcode(barcode_format.format(scan_id), **barcode_options)
