@@ -36,13 +36,13 @@ def next_scan_id(file_portal_types=['dmsmainfile'], cliend_id_var='client_id', s
 
 def scan_id_barcode(obj, file_portal_types=['dmsmainfile'],
                     cliend_id_var='client_id', barcode_format='IMIO{0}',
-                    scan_type='3', barcode_options={}):
+                    scan_type='3', barcode_options={}, scan_id=None):
     """Generate the barcode with scan_id for given p_obj :
        - set the scan_id attribute on given p_obj if it does not exist yet;
        - return the data of the generated barcode.
        Some options may be used when generating the barcode, check the
        generate_barcode method to get available options."""
-    scan_id = getattr(aq_base(obj), 'scan_id', None)
+    scan_id = scan_id or getattr(aq_base(obj), 'scan_id', None)
     if not scan_id:
         scan_id = next_scan_id(file_portal_types=file_portal_types,
                                cliend_id_var=cliend_id_var,
