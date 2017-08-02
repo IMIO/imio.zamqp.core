@@ -67,6 +67,9 @@ class DMSMainFile(object):
     def file_portal_type(self):
         return 'dmsmainfile'
 
+    def creation_file_portal_type(self):
+        return self.file_portal_type
+
     @property
     def existing_file(self):
         result = self.site.portal_catalog(
@@ -129,13 +132,19 @@ class DMSMainFile(object):
         return
 
     def _upload_file(self, document, obj_file):
+        extra_data = self._upload_file_extra_data()
         new_file = createContentInContainer(
             document,
-            self.file_portal_type,
+            self.creation_file_portal_type,
             title=self.metadata.get('file_title'),
             file=obj_file,
+            **extra_data
         )
         return new_file
+
+    def _upload_file_extra_data(self):
+        """ """
+        return {}
 
     def create(self, obj_file):
         raise NotImplementedError

@@ -11,6 +11,10 @@ Changelog
 - In `utils.highest_scan_id`, do the portal_catalog search unrestricted so we
   are sure that every elements are found.
   [gbastien]
+- Make it possible to use a different portal_type for query or creation.  This
+  is useful if consumer.file_portal_type returns several portal_types, we need
+  to know which of the returned portal_types we need to use for file creation.
+  [gbastien]
 
 0.1 (2017-06-01)
 ----------------
