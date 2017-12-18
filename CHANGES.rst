@@ -1,7 +1,7 @@
 Changelog
 =========
 
-0.3 (unreleased)
+0.3 (2017-12-18)
 ----------------
 
 - Removed `commit` method that tried to manage retry of failing commits,
