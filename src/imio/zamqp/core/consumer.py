@@ -4,10 +4,8 @@ from requests.auth import HTTPBasicAuth
 import cPickle
 import hashlib
 import requests
-import time
 import transaction
 
-from ZODB.POSException import ConflictError
 from zope.component.hooks import getSite
 from zope.globalrequest import getRequest
 
@@ -20,17 +18,12 @@ import logging
 log = logging.getLogger('imio.zamqp.core')
 
 
-def commit(retry_count=10):
-    commited = False
-    while commited is False:
-        try:
-            transaction.commit()
-            commited = True
-        except ConflictError as e:
-            time.sleep(5)
-            retry_count -= 1
-            if retry_count <= 0:
-                raise e
+def consume(consumer_class, folder, document_type, message):
+    """ """
+    doc = consumer_class('', '', message)
+    doc.create_or_update()
+    transaction.commit()
+    message.ack()
 
 
 class Dummy(object):
