@@ -13,7 +13,7 @@ Changelog
 - Removed `commit` method that tried to manage retry of failing commits,
   queuing does not manage order, this will be managed another way when necessary.
   [gbastien]
-- Added methode `consume` that is the default method called by consumers to
+- Added method `consume` that is the default method called by consumers to
   consume a message using the `create_or_update` method.
   [gbastien]
 
