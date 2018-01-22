@@ -6,6 +6,10 @@ Changelog
 
 - Corrected unused parameters in consume function.
   [sgeulette]
+- Corrected method not called => made a property.
+  [sgeulette]
+- Handle several portal types in search. Take the first one for creation
+  [sgeulette]
 
 0.3 (2017-12-18)
 ----------------

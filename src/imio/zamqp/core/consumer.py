@@ -57,16 +57,17 @@ class DMSMainFile(object):
         return getSite()
 
     @property
-    def file_portal_type(self):
-        return 'dmsmainfile'
+    def file_portal_types(self):
+        return ['dmsmainfile']
 
+    @property
     def creation_file_portal_type(self):
-        return self.file_portal_type
+        return self.file_portal_types[0]
 
     @property
     def existing_file(self):
         result = self.site.portal_catalog(
-            portal_type=self.file_portal_type,
+            portal_type=self.file_portal_types,
             scan_id=self.scan_fields.get('scan_id'),
         )
         if result:
@@ -80,7 +81,7 @@ class DMSMainFile(object):
                                     self.obj.version)
         r = requests.get(url, auth=self.http_auth)
         if r.status_code != 200:
-            raise ValueError("HTTP error : %s" % r.status_code)
+            raise ValueError("HTTP error : %s on '%s'" % (r.status_code, url))
         if hashlib.md5(r.content).hexdigest() != self.obj.file_md5:
             raise ValueError("MD5 doesn't match")
         return r.content
