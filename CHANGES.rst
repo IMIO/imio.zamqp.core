@@ -1,7 +1,7 @@
 Changelog
 =========
 
-0.4 (unreleased)
+0.4 (2018-01-22)
 ----------------
 
 - Corrected unused parameters in consume function.
