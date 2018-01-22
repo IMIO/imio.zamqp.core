@@ -20,7 +20,7 @@ log = logging.getLogger('imio.zamqp.core')
 
 def consume(consumer_class, folder, document_type, message):
     """ """
-    doc = consumer_class('', '', message)
+    doc = consumer_class(folder, document_type, message)
     doc.create_or_update()
     transaction.commit()
     message.ack()

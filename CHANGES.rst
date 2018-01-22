@@ -4,8 +4,8 @@ Changelog
 0.4 (unreleased)
 ----------------
 
-- Nothing changed yet.
-
+- Corrected unused parameters in consume function.
+  [sgeulette]
 
 0.3 (2017-12-18)
 ----------------
