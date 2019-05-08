@@ -17,7 +17,9 @@ def highest_scan_id(file_portal_types=['dmsmainfile']):
         sort_order='descending',
         sort_limit=1)
     if brains:
-        return brains[0].scan_id
+        for brain in brains:
+            if brain.scan_id != 'None':
+                return brain.scan_id
     else:
         return None
 

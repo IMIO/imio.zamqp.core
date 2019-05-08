@@ -4,8 +4,8 @@ Changelog
 0.5 (unreleased)
 ----------------
 
-- Nothing changed yet.
-
+- Skip empty scan_id in highest_scan_id method.
+  [sgeulette]
 
 0.4 (2018-01-22)
 ----------------
