@@ -1,7 +1,7 @@
 Changelog
 =========
 
-0.5 (unreleased)
+0.5 (2019-09-24)
 ----------------
 
 - Skip empty scan_id in highest_scan_id method.
