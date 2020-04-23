@@ -16,12 +16,12 @@ def highest_scan_id(file_portal_types=['dmsmainfile']):
         sort_on='scan_id',
         sort_order='descending',
         sort_limit=1)
+    highest_id = None
     if brains:
         for brain in brains:
             if brain.scan_id != 'None':
-                return brain.scan_id
-    else:
-        return None
+                highest_id = brain.scan_id
+    return highest_id
 
 
 def next_scan_id(file_portal_types=['dmsmainfile'], cliend_id_var='client_id', scan_type='3'):

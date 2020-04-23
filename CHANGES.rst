@@ -4,8 +4,8 @@ Changelog
 0.6 (unreleased)
 ----------------
 
-- Nothing changed yet.
-
+- In `utils.highest_scan_id`, avoid 2 `return` for lisibility.
+  [gbastien]
 
 0.5 (2019-09-24)
 ----------------
