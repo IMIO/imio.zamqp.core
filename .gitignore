@@ -9,6 +9,7 @@
 bin/
 buildout-cache/
 develop-eggs/
+dist/
 parts/
 src/*
 !src/imio
