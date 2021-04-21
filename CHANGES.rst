@@ -1,7 +1,7 @@
 Changelog
 =========
 
-0.6 (unreleased)
+0.6 (2021-04-21)
 ----------------
 
 - In `utils.highest_scan_id`, avoid 2 `return` for lisibility.
