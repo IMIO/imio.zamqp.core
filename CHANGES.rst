@@ -4,8 +4,9 @@ Changelog
 0.7 (unreleased)
 ----------------
 
-- Nothing changed yet.
-
+- Corrected parameter typo in `utils.next_scan_id` and `utils.scan_id_barcode`.
+  Added sphinx compliant doc strings.
+  [sgeulette]
 
 0.6 (2021-04-21)
 ----------------
