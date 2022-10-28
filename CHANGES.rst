@@ -1,7 +1,7 @@
 Changelog
 =========
 
-0.7 (unreleased)
+0.7 (2022-10-28)
 ----------------
 
 - Corrected parameter typo in `utils.next_scan_id` and `utils.scan_id_barcode`.
