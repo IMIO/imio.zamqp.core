@@ -4,8 +4,8 @@ Changelog
 0.8 (unreleased)
 ----------------
 
-- Nothing changed yet.
-
+- Improved `utils.next_scan_id` to check if found highest id starts well with scan_type parameter.
+  [sgeulette]
 
 0.7 (2022-10-28)
 ----------------

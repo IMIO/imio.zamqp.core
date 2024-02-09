@@ -1,0 +1,20 @@
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    xmlns:five="http://namespaces.zope.org/five"
+    xmlns:plone="http://namespaces.plone.org/plone"
+    xmlns:i18n="http://namespaces.zope.org/i18n"
+    xmlns:genericsetup="http://namespaces.zope.org/genericsetup"
+    i18n_domain="imio.zamqp.core">
+
+  <include file="configure.zcml" />
+  <include package="collective.dms.scanbehavior" />
+
+  <genericsetup:registerProfile
+      name="testing"
+      title="imio.zamqp.core testing profile"
+      directory="profiles/testing"
+      for="Products.CMFPlone.interfaces.ITestCasePloneSiteRoot"
+      provides="Products.GenericSetup.interfaces.EXTENSION"
+      />
+
+</configure>

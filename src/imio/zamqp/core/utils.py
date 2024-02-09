@@ -36,14 +36,15 @@ def next_scan_id(file_portal_types=['dmsmainfile'], client_id_var='client_id', s
     :return: new full scan_id
     """
     highest_id = highest_scan_id(file_portal_types=file_portal_types)
-    if not highest_id:
+    client_id = base.get_config(client_id_var)
+    prefix = '{}{}{}'.format(client_id[0:2], scan_type, client_id[2:6])
+    # limitation: doesn't check if the generated id already exists in catalog
+    if not highest_id or not highest_id.startswith(prefix):
         # generate first scan_id, concatenate client_id and first number
-        client_id = base.get_config(client_id_var)
-        highest_id = '%s%s%s00000000' % (client_id[0:2], scan_type, client_id[2:6])
-    client_id, unique_id = highest_id[0:7], highest_id[7:15]
+        highest_id = '{}00000000'.format(prefix)
     # increment unique_id
-    unique_id = "%08d" % (int(unique_id) + 1)
-    return client_id + unique_id
+    unique_id = "{:08d}".format(int(highest_id[7:15]) + 1)
+    return prefix + unique_id
 
 
 def scan_id_barcode(obj, file_portal_types=['dmsmainfile'],

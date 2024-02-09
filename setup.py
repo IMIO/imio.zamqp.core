@@ -40,7 +40,11 @@ setup(
         'plone.dexterity',
         'requests',
     ],
-    extras_require={'test': ['plone.app.testing']},
+    extras_require={'test': [
+        'plone.app.testing',
+        'collective.dms.scanbehavior',
+        'plone.app.dexterity',
+    ]},
     entry_points="""
     # -*- Entry points: -*-
     """,
