@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 
-from plone.app.robotframework.testing import REMOTE_LIBRARY_BUNDLE_FIXTURE
 from plone.app.testing import FunctionalTesting
 from plone.app.testing import IntegrationTesting
 from plone.app.testing import PLONE_FIXTURE
@@ -8,7 +7,6 @@ from plone.app.testing import PloneSandboxLayer
 from plone.app.testing import TEST_USER_ID
 from plone.app.testing import applyProfile
 from plone.app.testing import setRoles
-from plone.testing import z2
 
 import imio.zamqp.core
 from Products.CMFPlone.utils import base_hasattr
@@ -50,14 +48,4 @@ IMIO_ZAMQP_CORE_INTEGRATION_TESTING = IntegrationTesting(
 IMIO_ZAMQP_CORE_FUNCTIONAL_TESTING = FunctionalTesting(
     bases=(IMIO_ZAMQP_CORE_FIXTURE,),
     name="ImioZamqpCoreLayer:FunctionalTesting",
-)
-
-
-IMIO_ZAMQP_CORE_ACCEPTANCE_TESTING = FunctionalTesting(
-    bases=(
-        IMIO_ZAMQP_CORE_FIXTURE,
-        REMOTE_LIBRARY_BUNDLE_FIXTURE,
-        z2.ZSERVER_FIXTURE,
-    ),
-    name="ImioZamqpCoreLayer:AcceptanceTesting",
 )

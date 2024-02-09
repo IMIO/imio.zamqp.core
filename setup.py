@@ -37,6 +37,7 @@ setup(
         'setuptools',
         'collective.zamqp',
         'imio.dataexchange.core',
+        'imio.helpers',
         'plone.dexterity',
         'requests',
     ],

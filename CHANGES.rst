@@ -6,6 +6,8 @@ Changelog
 
 - Improved `utils.next_scan_id` to check if found highest id starts well with scan_type parameter.
   [sgeulette]
+- Added gh actions for tests.
+  [sgeulette]
 
 0.7 (2022-10-28)
 ----------------
