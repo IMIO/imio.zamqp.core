@@ -39,9 +39,11 @@ def next_scan_id(file_portal_types=['dmsmainfile'], client_id_var='client_id', s
     client_id = base.get_config(client_id_var)
     prefix = '{}{}{}'.format(client_id[0:2], scan_type, client_id[2:6])
     # limitation: doesn't check if the generated id already exists in catalog
-    if not highest_id or not highest_id.startswith(prefix):
+    if not highest_id:
         # generate first scan_id, concatenate client_id and first number
         highest_id = '{}00000000'.format(prefix)
+    elif not highest_id.startswith(prefix):
+        raise ValueError("highest_id '{}' doesn't start with prefix '{}'".format(highest_id, prefix))
     # increment unique_id
     unique_id = "{:08d}".format(int(highest_id[7:15]) + 1)
     return prefix + unique_id

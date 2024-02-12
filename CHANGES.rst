@@ -4,8 +4,8 @@ Changelog
 0.9 (unreleased)
 ----------------
 
-- Nothing changed yet.
-
+- Raised a ValueError in `utils.next_scan_id` when found highest id doesn't start with scan_type parameter.
+  [sgeulette]
 
 0.8 (2024-02-12)
 ----------------

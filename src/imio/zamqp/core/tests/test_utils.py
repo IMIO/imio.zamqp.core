@@ -26,4 +26,4 @@ class TestUtils(unittest.TestCase):
         self.tt1.reindexObject()
         self.assertEqual(next_scan_id(file_portal_types=['testingtype']), '013999900000009')
         # scan_id found with another type
-        self.assertEqual(next_scan_id(file_portal_types=['testingtype'], scan_type=2), '012999900000001')
+        self.assertRaises(ValueError, next_scan_id, file_portal_types=['testingtype'], scan_type=2)
