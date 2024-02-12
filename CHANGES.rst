@@ -1,7 +1,7 @@
 Changelog
 =========
 
-0.9 (unreleased)
+0.9 (2024-02-12)
 ----------------
 
 - Raised a ValueError in `utils.next_scan_id` when found highest id doesn't start with scan_type parameter.
