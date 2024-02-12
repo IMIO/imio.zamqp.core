@@ -1,7 +1,7 @@
 Changelog
 =========
 
-0.8 (unreleased)
+0.8 (2024-02-12)
 ----------------
 
 - Improved `utils.next_scan_id` to check if found highest id starts well with scan_type parameter.
