@@ -4,8 +4,8 @@ Changelog
 0.10 (unreleased)
 -----------------
 
-- Nothing changed yet.
-
+- Commented unneeded code.
+  [sgeulette]
 
 0.9 (2024-02-12)
 ----------------
