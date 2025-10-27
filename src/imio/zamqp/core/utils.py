@@ -21,7 +21,9 @@ def highest_scan_id(file_portal_types=['dmsmainfile']):
         sort_limit=1)
     # highest_id = None
     if brains:
-        return brains[0].scan_id
+        # we use the index value so we are sure it is the same value
+        # used in the previous catalog.unrestrictedSearchResults query
+        return catalog.getIndexDataForRID(brains[0].getRID())['scan_id']
         # for brain in brains:  # no idea why this code was added in place of brains[0]
         #     if brain.scan_id != 'None':
         #         highest_id = brain.scan_id

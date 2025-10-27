@@ -6,6 +6,11 @@ Changelog
 
 - Commented unneeded code.
   [sgeulette]
+- In `utils.highest_scan_id`, get `scan_id` from `brain` index instead metadata
+  in case there is a desynchronization between index and metadata and we are
+  sure we are re-using the same value as the one used to get
+  the highest index value.
+  [gbastien]
 
 0.9 (2024-02-12)
 ----------------
