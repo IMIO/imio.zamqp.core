@@ -1,7 +1,7 @@
 Changelog
 =========
 
-0.10 (unreleased)
+0.10 (2025-11-05)
 -----------------
 
 - Commented unneeded code.
