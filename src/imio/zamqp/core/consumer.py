@@ -107,7 +107,7 @@ class DMSMainFile(object):
         for key, value in self.scan_fields.items():
             if value:
                 setattr(main_file, key, value)
-        main_file.reindexObject(idxs=('scan_id', 'signed'))
+        main_file.reindexObject(idxs=('scan_id',))
 
     def update(self, the_file, obj_file):
         if self.obj.version < getattr(the_file, 'version', 1):

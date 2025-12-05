@@ -43,7 +43,7 @@ setup(
     ],
     extras_require={'test': [
         'plone.app.testing',
-        'collective.dms.scanbehavior',
+        'collective.dms.scanbehavior>=1.3.2',
         'plone.app.dexterity',
     ]},
     entry_points="""
