@@ -1,4 +1,6 @@
-from setuptools import setup, find_packages
+from setuptools import find_packages
+from setuptools import setup
+
 
 version = '0.11.dev0'
 
@@ -43,7 +45,7 @@ setup(
     ],
     extras_require={'test': [
         'plone.app.testing',
-        'collective.dms.scanbehavior',
+        'collective.dms.scanbehavior>1.3.1',
         'plone.app.dexterity',
     ]},
     entry_points="""
