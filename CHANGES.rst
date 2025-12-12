@@ -6,7 +6,8 @@ Changelog
 
 - Removed 'to_sign' and 'signed' fields from the scanbehavior.
   [chris-adam]
-
+- Corrected `collective.dms.scanbehavior.behaviors.IScanFields` usage
+  [sgeulette]
 
 0.10 (2025-11-05)
 -----------------
