@@ -4,7 +4,7 @@ Changelog
 0.11 (unreleased)
 -----------------
 
-- Removed 'to_sign' and 'signed' fields from the scanbehavior.
+- Removed `to_sign` and `signed` fields from the scanbehavior.
   [chris-adam]
 - Corrected `collective.dms.scanbehavior.behaviors.IScanFields` usage
   [sgeulette]
