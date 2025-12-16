@@ -1,7 +1,7 @@
 Changelog
 =========
 
-0.11 (unreleased)
+0.11 (2025-12-16)
 -----------------
 
 - Removed `to_sign` and `signed` fields from the scanbehavior.
