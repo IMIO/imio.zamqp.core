@@ -4,7 +4,8 @@ Changelog
 0.12 (unreleased)
 -----------------
 
-- Nothing changed yet.
+- Added function to add "finalized" state on eSigning sessions.
+  [chris-adam]
 
 
 0.11 (2025-12-16)
