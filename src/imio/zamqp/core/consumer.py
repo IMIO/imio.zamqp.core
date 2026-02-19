@@ -1,20 +1,21 @@
 # encoding: utf-8
 
-from requests.auth import HTTPBasicAuth
-import cPickle
-import hashlib
-import requests
-import transaction
-
-from zope.component.hooks import getSite
-from zope.globalrequest import getRequest
-
+from imio.esign.utils import get_session_annotation
+from imio.zamqp.core import base
 from plone import api
 from plone.dexterity.utils import createContentInContainer
 from plone.namedfile.file import NamedBlobFile
-from imio.zamqp.core import base
+from requests.auth import HTTPBasicAuth
+from zope.component.hooks import getSite
+from zope.globalrequest import getRequest
 
+import cPickle
+import hashlib
 import logging
+import requests
+import transaction
+
+
 log = logging.getLogger('imio.zamqp.core')
 
 
@@ -142,3 +143,44 @@ class DMSMainFile(object):
 
     def create(self, obj_file):
         raise NotImplementedError
+
+    def _update_esign_session(self, uid):
+        """
+        Mark the file uid as received in its esign session,
+        setting the session state to "finalized" when all files are received.
+
+        This function assumes we are treating a file from eSigning.
+        To avoid misuse, wrap this function in a condition.
+        ```python
+        if self.obj.metadata["scanner"] == u"_api_esign_":
+            self._update_esign_session(uid)
+        ```
+
+        :param uid: UID of the returned signed file as stored in the session annotation.
+        :return: True on success, False if uid is not found in the session annotation.
+        """
+        sessions = get_session_annotation()
+        if uid not in sessions["uids"]:
+            log.error(u"file not found in sessions: esign uid '{}'".format(uid))
+            return False
+
+        session_id = sessions["uids"][uid]
+        if session_id not in sessions["sessions"]:
+            log.error(
+                u"session not found: document uid '{}' references missing session '{}'".format(uid, session_id)
+            )
+            return False
+
+        files = sessions["sessions"][session_id]["files"]
+        file_info = [fdic for fdic in files if fdic["uid"] == uid]
+        if not file_info:
+            log.error(
+                u"file info not found in sessions: esign uid '{}' in session '{}'".format(uid, session_id)
+            )
+            return False
+
+        file_info[0]["status"] = "received"
+        if all(fdic["status"] == "received" for fdic in files):
+            sessions["sessions"][session_id]["state"] = "finalized"
+
+        return True
