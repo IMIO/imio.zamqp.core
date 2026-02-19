@@ -149,6 +149,13 @@ class DMSMainFile(object):
         Mark the file uid as received in its esign session,
         setting the session state to "finalized" when all files are received.
 
+        This function assumes we are treating a file from eSigning.
+        To avoid misuse, wrap this function in a condition.
+        ```python
+        if self.obj.metadata["scanner"] == u"_api_esign_":
+            self._update_esign_session(uid)
+        ```
+
         :param uid: UID of the returned signed file as stored in the session annotation.
         :return: True on success, False if uid is not found in the session annotation.
         """
