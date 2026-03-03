@@ -1,12 +1,11 @@
 Changelog
 =========
 
-0.12 (unreleased)
+0.12 (2026-03-03)
 -----------------
 
 - Added function to add "finalized" state on eSigning sessions.
   [chris-adam]
-
 
 0.11 (2025-12-16)
 -----------------
