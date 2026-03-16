@@ -1,11 +1,11 @@
 Changelog
 =========
 
-0.13 (unreleased)
------------------
+0.13.1 (2026-03-16)
+-------------------
 
-- Nothing changed yet.
-
+- Fixed encoding error in error message.
+  [chris-adam]
 
 0.12 (2026-03-03)
 -----------------
